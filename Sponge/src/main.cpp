@@ -219,9 +219,9 @@ unsigned long startTime = 0;
 const unsigned long runDuration = 20000; // 20 seconds
 
 void setup() {                
-  pinMode(fanPin, OUTPUT);
+  //pinMode(fanPin, OUTPUT);
   pinMode(buttonPin1, INPUT_PULLUP); 
-  pinMode(heaterPin, OUTPUT);
+  //pinMode(heaterPin, OUTPUT);
   stepper.setSpeed(200);
 }
 
@@ -234,8 +234,8 @@ void loop() {
   }
 
   if (running) {
-    digitalWrite(fanPin, HIGH);
-    digitalWrite(heaterPin, HIGH);
+    //digitalWrite(fanPin, HIGH);
+    //digitalWrite(heaterPin, HIGH);
 
     // Keep motor moving continuously
     stepper.step(1);
@@ -243,8 +243,8 @@ void loop() {
     // Check if 20 seconds passed
     if (millis() - startTime >= runDuration) {
       running = false;
-      digitalWrite(fanPin, LOW);
-      digitalWrite(heaterPin, LOW);
+      //digitalWrite(fanPin, LOW);
+      //digitalWrite(heaterPin, LOW);
     }
   }
 }
