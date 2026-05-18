@@ -10,11 +10,16 @@ Stepper stepper(stepsPerRev, 8, 9, 10, 11);
 const int buttonPinShort = 3;
 const int buttonPinLong = 4;
 
+
 enum RunMode { NONE, SHORT, LONG };
 RunMode currentMode = NONE;
 unsigned long startTime = 0;
 const unsigned long runDurationShort = 5000;
-const unsigned long runDurationLong = 20000;
+const unsigned long runDurationLong = 70000;
+const unsigned long longCycleOn = 60000;
+const unsigned long longCycleOff = 10000;
+const unsigned long longCyclePeriod = longCycleOn + longCycleOff;
+
 
 void setOutputs(RunMode mode) {
   if (mode == SHORT) {
@@ -61,6 +66,13 @@ void loop() {
   if (currentMode != NONE) {
     stepper.step(1);
     unsigned long elapsed = millis() - startTime;
+
+    if (currentMode == LONG) {
+      unsigned long cycleElapsed = elapsed % longCyclePeriod;
+      digitalWrite(fanPin, HIGH);
+      digitalWrite(uvPin, HIGH);
+      digitalWrite(heaterPin, cycleElapsed < longCycleOn ? HIGH : LOW);
+    }
 
     if ((currentMode == SHORT && elapsed >= runDurationShort) ||
         (currentMode == LONG && elapsed >= runDurationLong)) {
